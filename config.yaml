@@ -1,0 +1,74 @@
+# ============================================================
+#  Orbbec Camera Capture Configuration
+#  用于 capture_all.py 的参数化配置
+# ============================================================
+
+# ── 输出设置 ──
+output:
+  base_dir: "./output"            # 输出根目录（相对于脚本位置）
+  color_format: "png"             # 彩色图保存格式: png, jpg
+  depth_raw_format: "png"         # 深度原始数据格式: png, npy
+  depth_vis_format: "png"         # 深度可视化格式: png, jpg
+  ir_format: "png"                # IR 图保存格式: png, jpg
+  jpg_quality: 95                 # jpg 压缩质量 (0-100)，仅 format=jpg 时生效
+
+# ── 要采集的数据流 ──
+streams:
+  color: true
+  depth: true
+  ir_left: true
+  ir_right: true
+  imu: true
+
+# ── 彩色流 ──
+color:
+  width: 848
+  height: 480
+  fps: 60
+
+# ── 深度流 ──
+depth:
+  width: 848
+  height: 480
+  fps: 60
+  min_depth_mm: 20                # 有效深度下限 (mm)
+  max_depth_mm: 10000             # 有效深度上限 (mm)
+  colormap: "JET"                 # 深度可视化色彩映射: JET, TURBO, INFERNO, BONE, HOT
+
+# ── IR 流（左右共享配置）──
+ir:
+  width: 848
+  height: 480
+  fps: 60
+
+# ── IMU 加速度计 ──
+accel:
+  sample_rate: "SAMPLE_RATE_200_HZ"
+  # 可选: SAMPLE_RATE_1_5625_HZ, SAMPLE_RATE_3_125_HZ, SAMPLE_RATE_6_25_HZ,
+  #       SAMPLE_RATE_12_5_HZ, SAMPLE_RATE_25_HZ, SAMPLE_RATE_50_HZ,
+  #       SAMPLE_RATE_100_HZ, SAMPLE_RATE_200_HZ, SAMPLE_RATE_500_HZ,
+  #       SAMPLE_RATE_1_KHZ, SAMPLE_RATE_2_KHZ, SAMPLE_RATE_4_KHZ,
+  #       SAMPLE_RATE_8_KHZ, SAMPLE_RATE_16_KHZ, SAMPLE_RATE_32_KHZ
+  full_scale_range: "ACCEL_FS_4g"
+  # 可选: ACCEL_FS_2g, ACCEL_FS_4g, ACCEL_FS_8g, ACCEL_FS_16g
+
+# ── IMU 陀螺仪 ──
+gyro:
+  sample_rate: "SAMPLE_RATE_200_HZ"
+  full_scale_range: "FS_1000dps"
+  # 可选: FS_16dps, FS_31dps, FS_62dps, FS_125dps,
+  #       FS_250dps, FS_500dps, FS_1000dps, FS_2000dps
+
+# ── 预览窗口 ──
+preview:
+  enabled: true                   # 是否显示预览窗口
+  window_width: 1280
+  window_height: 720
+  panel_width: 480                # 单个面板宽度
+  panel_height: 360               # 单个面板高度
+
+# ── 管线设置 ──
+pipeline:
+  frame_timeout_ms: 100           # 等待帧超时 (ms)
+  frame_aggregate_mode: "FULL_FRAME_REQUIRE"
+  # 可选: FULL_FRAME_REQUIRE, COLOR_FRAME_REQUIRE, ANY_SITUATION

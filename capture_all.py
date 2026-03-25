@@ -99,6 +99,12 @@ AGGREGATE_MODE_MAP = {
     "ANY_SITUATION":       OBFrameAggregateOutputMode.ANY_SITUATION,
 }
 
+ALIGN_MODE_MAP = {
+    "DISABLE": OBAlignMode.ALIGN_DISABLE,
+    "ALIGN_D2C_HW_MODE": OBAlignMode.ALIGN_D2C_HW_MODE,
+    "ALIGN_D2C_SW_MODE": OBAlignMode.ALIGN_D2C_SW_MODE,
+}
+
 
 def find_video_profile(profile_list, width, height, fps):
     """Find a matching video stream profile by resolution and fps (format-agnostic)."""
@@ -480,6 +486,13 @@ def main():
         imu_collector = IMUCollector(cfg)
         imu_collector.start()
         time.sleep(0.5)
+
+    # ── Set D2C alignment mode ──
+    align_mode_str = pipeline_cfg.get("align_mode", "DISABLE")
+    if align_mode_str != "DISABLE":
+        align_mode = ALIGN_MODE_MAP.get(align_mode_str, OBAlignMode.ALIGN_DISABLE)
+        config.set_align_mode(align_mode)
+        print(f"[D2C] Alignment mode: {align_mode_str}")
 
     # ── Start video pipeline ──
     pipeline.start(config)

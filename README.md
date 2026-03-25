@@ -3,7 +3,6 @@
 ## 环境要求
 
 - Python 3.8+
-- conda 环境：`env`
 - 依赖：`pyorbbecsdk`, `opencv-python`, `numpy`, `pyyaml`
 
 ## 安装依赖

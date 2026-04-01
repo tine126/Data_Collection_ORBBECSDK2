@@ -31,12 +31,12 @@ streams:
 color:
   width: 848
   height: 480
-  fps: 60
+  fps: 30
 
 depth:
   width: 848
   height: 480
-  fps: 60
+  fps: 30
   min_depth_mm: 20
   max_depth_mm: 10000
   colormap: "JET"  # 可选: JET, TURBO, INFERNO, BONE, HOT
@@ -44,10 +44,13 @@ depth:
 ir:
   width: 848
   height: 480
-  fps: 60
+  fps: 30
 ```
 
-**注意**：Gemini 335L 要求 Depth 和 IR 必须使用相同的分辨率和帧率。
+**注意**：
+- Gemini 335L 要求 Depth 和 IR 必须使用相同的分辨率和帧率
+- 推荐配置：848x480@30fps（稳定性好，支持 D2C 对齐）
+- 其他支持的配置可通过 `tools/find_common_profiles.py` 查看
 
 ### IMU 配置
 ```yaml
@@ -59,6 +62,19 @@ gyro:
   sample_rate: "SAMPLE_RATE_200_HZ"
   full_scale_range: "FS_1000dps"
 ```
+
+### D2C 对齐配置
+```yaml
+pipeline:
+  align_mode: "ALIGN_D2C_SW_MODE"  # D2C对齐模式
+```
+
+**对齐模式说明**：
+- `DISABLE` - 关闭对齐（深度和彩色在各自坐标系）
+- `ALIGN_D2C_HW_MODE` - 硬件对齐（快速，需要相同分辨率）
+- `ALIGN_D2C_SW_MODE` - 软件对齐（兼容性好，推荐）
+
+启用 D2C 后，深度图会对齐到彩色图坐标系，像素位置一一对应。
 
 ### 输出设置
 ```yaml
@@ -73,16 +89,16 @@ output:
 
 ## 使用方法
 
-### 1. 数据采集 (capture_all.py)
+### 1. 数据采集 (main.py)
 
 启动采集程序：
 ```bash
-python capture_all.py
+python main.py
 ```
 
 或指定配置文件：
 ```bash
-python capture_all.py -c my_config.yaml
+python main.py -c my_config.yaml
 ```
 
 #### 快捷键
@@ -108,23 +124,27 @@ output/
     └── metadata.json    # 采集元数据
 ```
 
-### 2. 查看支持的分辨率 (enumerate_profiles.py)
+### 2. 查看支持的分辨率 (tools/enumerate_profiles.py)
 
 ```bash
-python enumerate_profiles.py
+python tools/enumerate_profiles.py
 ```
 
 输出设备支持的所有分辨率、格式和帧率。
 
-### 3. 查找通用分辨率 (find_common_profiles.py)
+### 3. 查找通用分辨率 (tools/find_common_profiles.py)
 
 ```bash
-python find_common_profiles.py
+python tools/find_common_profiles.py
 ```
 
 输出 Color 和 Depth 都支持的分辨率和帧率组合。
 
-### 4. 获取相机内参 (get_camera_intrinsics.py)
+### 4. 获取相机内参 (tools/get_camera_intrinsics.py)
+
+```bash
+python tools/get_camera_intrinsics.py
+```
 
 ```bash
 python get_camera_intrinsics.py

@@ -100,9 +100,9 @@ AGGREGATE_MODE_MAP = {
 }
 
 ALIGN_MODE_MAP = {
-    "DISABLE": OBAlignMode.ALIGN_DISABLE,
-    "ALIGN_D2C_HW_MODE": OBAlignMode.ALIGN_D2C_HW_MODE,
-    "ALIGN_D2C_SW_MODE": OBAlignMode.ALIGN_D2C_SW_MODE,
+    "DISABLE": OBAlignMode.DISABLE,
+    "ALIGN_D2C_HW_MODE": OBAlignMode.HW_MODE,
+    "ALIGN_D2C_SW_MODE": OBAlignMode.SW_MODE,
 }
 
 
@@ -490,7 +490,7 @@ def main():
     # ── Set D2C alignment mode ──
     align_mode_str = pipeline_cfg.get("align_mode", "DISABLE")
     if align_mode_str != "DISABLE":
-        align_mode = ALIGN_MODE_MAP.get(align_mode_str, OBAlignMode.ALIGN_DISABLE)
+        align_mode = ALIGN_MODE_MAP.get(align_mode_str, OBAlignMode.DISABLE)
         config.set_align_mode(align_mode)
         print(f"[D2C] Alignment mode: {align_mode_str}")
 

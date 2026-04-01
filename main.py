@@ -1,18 +1,3 @@
-"""
-Orbbec Camera Multi-Stream Data Capture Script
-Simultaneously captures RGB, Depth, Left IR, Right IR, and IMU data.
-
-Usage:
-    conda activate basketball_env
-    python capture_all.py                  # 默认读取同目录下 config.yaml
-    python capture_all.py -c my_config.yaml  # 指定配置文件
-
-Controls:
-    SPACE  - Start / Stop recording
-    S      - Save single snapshot (when not recording)
-    Q/ESC  - Quit
-"""
-
 import os
 import sys
 import csv

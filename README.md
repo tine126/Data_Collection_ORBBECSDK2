@@ -147,7 +147,7 @@ python tools/get_camera_intrinsics.py
 ```
 
 ```bash
-python get_camera_intrinsics.py
+python tools/get_camera_intrinsics.py
 ```
 
 输出并保存相机内参到 `camera_intrinsics.json`：
@@ -198,23 +198,6 @@ python get_camera_intrinsics.py
 **错误**: `depth/ir streams must have the same resolution and frame rate`
 
 **解决**: 确保 `config.yaml` 中 depth 和 ir 的分辨率、帧率完全一致。
-
-### 2. IMU 采样率低
-**原因**: IMU 线程的 timeout 设置过大。
-
-**解决**: 代码已优化为 10ms timeout，实际采样率应达到 200Hz。
-
-### 3. 彩色图显示警告
-**错误**: `Unsupported color format: OBFormat.BGRA`
-
-**解决**: 代码已支持 BGRA/RGBA 格式，更新到最新版本。
-
-### 4. 按键无响应
-**原因**: 窗口未获得焦点或使用了大写字母。
-
-**解决**:
-- 点击预览窗口使其获得焦点
-- 所有按键支持大小写（U/u, S/s, Q/q）
 
 ## 技术细节
 

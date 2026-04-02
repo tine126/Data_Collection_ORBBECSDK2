@@ -597,9 +597,6 @@ def main():
             # ── Save data if recording ──
             if recording and output_dirs and frames is not None:
                 # Use device timestamp as filename (use depth timestamp as primary)
-                # Debug: print timestamps
-                print(f"[DEBUG] Timestamps - color:{color_ts}, depth:{depth_ts}, ir_left:{ir_left_ts}, ir_right:{ir_right_ts}")
-
                 # Select timestamp with priority: depth > color > ir_left
                 device_ts = depth_ts or color_ts or ir_left_ts or ir_right_ts
                 ts_str = str(int(device_ts)) if device_ts else f"{frame_idx:06d}"

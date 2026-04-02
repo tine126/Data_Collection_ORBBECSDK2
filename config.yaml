@@ -16,8 +16,8 @@ output:
 streams:
   color: true
   depth: true
-  ir_left: true
-  ir_right: true
+  ir_left: false
+  ir_right: false
   imu: true
 
 # ── 彩色流 ──

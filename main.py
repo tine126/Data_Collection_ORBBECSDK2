@@ -305,7 +305,7 @@ class IMUCollector:
                         self.latest_accel = accel_data
                         self.latest_gyro = gyro_data
                         if self.recording and (accel_data or gyro_data):
-                            record = {"sys_ts": time.time()}
+                            record = {"sys_ts": int(time.time() * 1000)}  # milliseconds to match image timestamps
                             if accel_data:
                                 record.update({f"accel_{k}": v for k, v in accel_data.items()})
                             if gyro_data:
@@ -355,6 +355,19 @@ class IMUCollector:
             writer.writeheader()
             writer.writerows(records)
         print(f"[IMU] Saved {len(records)} records -> {filepath}")
+
+
+def save_frame_timestamps(timestamps, filepath):
+    """Save frame timestamps to CSV."""
+    if not timestamps:
+        print("[TIMESTAMPS] No frame timestamps to save.")
+        return
+    fieldnames = ["frame_idx", "color_ts", "depth_ts", "ir_left_ts", "ir_right_ts"]
+    with open(filepath, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(timestamps)
+    print(f"[TIMESTAMPS] Saved {len(timestamps)} frame timestamps -> {filepath}")
 
 
 # ──────────────────────────── Main Capture Loop ────────────────────────────
@@ -541,32 +554,56 @@ def main():
             depth_vis = None
             ir_left_image = None
             ir_right_image = None
+            color_ts = None
+            depth_ts = None
+            ir_left_ts = None
+            ir_right_ts = None
 
             if frames is not None:
+                # Get system timestamp for this frame
+                sys_ts = int(time.time() * 1000)  # milliseconds
+
                 if has_color:
                     color_frame = frames.get_color_frame()
-                    color_image = frame_to_bgr_image(color_frame)
+                    if color_frame:
+                        color_ts = color_frame.get_timestamp() or sys_ts
+                        color_image = frame_to_bgr_image(color_frame)
 
                 if has_depth:
                     depth_frame = frames.get_depth_frame()
-                    depth_raw, depth_vis_raw = process_depth_frame(depth_frame, min_depth, max_depth)
-                    if depth_vis_raw is not None:
-                        depth_vis = cv2.applyColorMap(depth_vis_raw, colormap)
+                    if depth_frame:
+                        depth_ts = depth_frame.get_timestamp() or sys_ts
+                        depth_raw, depth_vis_raw = process_depth_frame(depth_frame, min_depth, max_depth)
+                        if depth_vis_raw is not None:
+                            depth_vis = cv2.applyColorMap(depth_vis_raw, colormap)
 
                 if has_dual_ir:
                     if streams_cfg.get("ir_left"):
                         left_frame = frames.get_frame(OBFrameType.LEFT_IR_FRAME)
-                        ir_left_image = process_ir_frame(left_frame)
+                        if left_frame:
+                            ir_left_ts = left_frame.get_timestamp() or sys_ts
+                            ir_left_image = process_ir_frame(left_frame)
                     if streams_cfg.get("ir_right"):
                         right_frame = frames.get_frame(OBFrameType.RIGHT_IR_FRAME)
-                        ir_right_image = process_ir_frame(right_frame)
+                        if right_frame:
+                            ir_right_ts = right_frame.get_timestamp() or sys_ts
+                            ir_right_image = process_ir_frame(right_frame)
                 elif has_single_ir:
                     ir_frame = frames.get_frame(OBFrameType.IR_FRAME)
-                    ir_left_image = process_ir_frame(ir_frame)
+                    if ir_frame:
+                        ir_left_ts = ir_frame.get_timestamp() or sys_ts
+                        ir_left_image = process_ir_frame(ir_frame)
 
             # ── Save data if recording ──
             if recording and output_dirs and frames is not None:
-                ts_str = f"{frame_idx:06d}"
+                # Use device timestamp as filename (use depth timestamp as primary)
+                # Debug: print timestamps
+                print(f"[DEBUG] Timestamps - color:{color_ts}, depth:{depth_ts}, ir_left:{ir_left_ts}, ir_right:{ir_right_ts}")
+
+                # Select timestamp with priority: depth > color > ir_left
+                device_ts = depth_ts or color_ts or ir_left_ts or ir_right_ts
+                ts_str = str(int(device_ts)) if device_ts else f"{frame_idx:06d}"
+
                 color_fmt = output_cfg["color_format"]
                 depth_raw_fmt = output_cfg["depth_raw_format"]
                 depth_vis_fmt = output_cfg["depth_vis_format"]

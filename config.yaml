@@ -22,13 +22,13 @@ streams:
 
 # ── 彩色流 ──
 color:
-  width: 848
+  width: 640
   height: 480
   fps: 30
 
 # ── 深度流 ──
 depth:
-  width: 848
+  width: 640
   height: 480
   fps: 30
   min_depth_mm: 20                # 有效深度下限 (mm)
@@ -72,5 +72,5 @@ pipeline:
   frame_timeout_ms: 100           # 等待帧超时 (ms)
   frame_aggregate_mode: "FULL_FRAME_REQUIRE"
   # 可选: FULL_FRAME_REQUIRE, COLOR_FRAME_REQUIRE, ANY_SITUATION
-  align_mode: "ALIGN_D2C_SW_MODE"  # D2C对齐模式
+  align_mode: "ALIGN_D2C_HW_MODE"  # D2C对齐模式
   # 可选: DISABLE (关闭), ALIGN_D2C_HW_MODE (硬件对齐), ALIGN_D2C_SW_MODE (软件对齐)

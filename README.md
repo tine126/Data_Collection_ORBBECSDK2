@@ -3,13 +3,14 @@
 ## 环境要求
 
 - Python 3.8+
-- 依赖：`pyorbbecsdk`, `opencv-python`, `numpy<2`, `pyyaml`
+- 依赖：`pyorbbecsdk2`, `opencv-python`, `numpy<2`, `pyyaml`
 
 ## 安装依赖
 
 ```bash
-conda activate env
+conda activate env  #自己的conda环境
 pip install pyyaml opencv-python "numpy<2"
+pip install pyorbbecsdk2
 ```
 
 ## 配置文件

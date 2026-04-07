@@ -3,13 +3,13 @@
 ## 环境要求
 
 - Python 3.8+
-- 依赖：`pyorbbecsdk`, `opencv-python`, `numpy`, `pyyaml`
+- 依赖：`pyorbbecsdk`, `opencv-python`, `numpy<2`, `pyyaml`
 
 ## 安装依赖
 
 ```bash
 conda activate env
-pip install pyyaml opencv-python numpy
+pip install pyyaml opencv-python "numpy<2"
 ```
 
 ## 配置文件
@@ -198,6 +198,16 @@ python tools/get_camera_intrinsics.py
 **错误**: `depth/ir streams must have the same resolution and frame rate`
 
 **解决**: 确保 `config.yaml` 中 depth 和 ir 的分辨率、帧率完全一致。
+
+### 2. numpy 版本过高导致深度数据报错
+**错误**: `ValueError: ndarray is not C-contiguous`
+
+**原因**: numpy 2.0+ 对内存连续性要求更严格，与 pyorbbecsdk 不兼容。
+
+**解决**: 降级 numpy 到 1.x：
+```bash
+pip install "numpy<2"
+```
 
 ## 技术细节
 

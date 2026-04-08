@@ -27,17 +27,19 @@ streams:
   imu: true        # IMU数据
 ```
 
-### 分辨率和帧率
+### 分辨率、帧率和像素格式
 ```yaml
 color:
-  width: 848
+  width: 640
   height: 480
   fps: 30
+  format: "MJPG"   # 像素格式: MJPG, RGB, BGR, YUYV, NV12 等（留空则自动匹配）
 
 depth:
-  width: 848
+  width: 640
   height: 480
   fps: 30
+  format: "Y16"    # 像素格式: Y16
   min_depth_mm: 20
   max_depth_mm: 10000
   colormap: "JET"  # 可选: JET, TURBO, INFERNO, BONE, HOT
@@ -46,12 +48,13 @@ ir:
   width: 848
   height: 480
   fps: 30
+  format: "Y16"    # 像素格式: Y8, Y16
 ```
 
 **注意**：
-- Gemini 335L 要求 Depth 和 IR 必须使用相同的分辨率和帧率
-- 推荐配置：848x480@30fps（稳定性好，支持 D2C 对齐）
-- 其他支持的配置可通过 `tools/find_common_profiles.py` 查看
+- 推荐 Color/Depth 使用 640x480@30fps，支持硬件 D2C 对齐
+- 硬件 D2C 对齐（`ALIGN_D2C_HW_MODE`）要求 Color 和 Depth 分辨率相同
+- 可通过 `tools/enumerate_profiles.py` 查看设备支持的所有格式和分辨率
 
 ### IMU 配置
 ```yaml

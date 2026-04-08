@@ -44,7 +44,7 @@ def main():
             print(f"  {'#':>4}  {'Format':<12} {'Resolution':<14} {'FPS':>4}")
             print(f"  {'----':>4}  {'----------':<12} {'------------':<14} {'---':>4}")
             for j in range(count):
-                profile = profile_list.get_video_stream_profile_by_index(j)
+                profile = profile_list.get_stream_profile_by_index(j).as_video_stream_profile()
                 w = profile.get_width()
                 h = profile.get_height()
                 fmt = profile.get_format()

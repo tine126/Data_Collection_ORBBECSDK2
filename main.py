@@ -90,14 +90,31 @@ ALIGN_MODE_MAP = {
     "ALIGN_D2C_SW_MODE": OBAlignMode.SW_MODE,
 }
 
+FORMAT_MAP = {
+    "MJPG": OBFormat.MJPG,
+    "RGB":  OBFormat.RGB,
+    "BGR":  OBFormat.BGR,
+    "BGRA": OBFormat.BGRA,
+    "RGBA": OBFormat.RGBA,
+    "YUYV": OBFormat.YUYV,
+    "UYVY": OBFormat.UYVY,
+    "Y8":   OBFormat.Y8,
+    "Y16":  OBFormat.Y16,
+    "Y12":  OBFormat.Y12,
+    "NV12": OBFormat.NV12,
+    "NV21": OBFormat.NV21,
+    "I420": OBFormat.I420,
+}
 
-def find_video_profile(profile_list, width, height, fps):
-    """Find a matching video stream profile by resolution and fps (format-agnostic)."""
+
+def find_video_profile(profile_list, width, height, fps, fmt=None):
+    """Find a matching video stream profile by resolution, fps, and optionally format."""
     count = profile_list.get_count()
     for i in range(count):
         p = profile_list.get_stream_profile_by_index(i).as_video_stream_profile()
         if p.get_width() == width and p.get_height() == height and p.get_fps() == fps:
-            return p
+            if fmt is None or p.get_format() == fmt:
+                return p
     return None
 
 
@@ -410,13 +427,14 @@ def main():
     if streams_cfg.get("color"):
         try:
             profile_list = pipeline.get_stream_profile_list(OBSensorType.COLOR_SENSOR)
-            color_profile = find_video_profile(profile_list, color_cfg["width"], color_cfg["height"], color_cfg["fps"])
+            color_fmt = FORMAT_MAP.get(color_cfg.get("format")) if color_cfg.get("format") else None
+            color_profile = find_video_profile(profile_list, color_cfg["width"], color_cfg["height"], color_cfg["fps"], color_fmt)
             if color_profile is None:
                 print(f"[COLOR] Requested {color_cfg['width']}x{color_cfg['height']}@{color_cfg['fps']} not found, using default.")
                 color_profile = profile_list.get_default_video_stream_profile()
             config.enable_stream(color_profile)
             cp = color_profile.as_video_stream_profile()
-            print(f"[COLOR] Enabled: {cp.get_width()}x{cp.get_height()} @ {cp.get_fps()} fps")
+            print(f"[COLOR] Enabled: {cp.get_width()}x{cp.get_height()} @ {cp.get_fps()} fps, format: {cp.get_format()}")
             has_color = True
         except Exception as e:
             print(f"[COLOR] Not available: {e}")
@@ -426,13 +444,14 @@ def main():
     if streams_cfg.get("depth"):
         try:
             profile_list = pipeline.get_stream_profile_list(OBSensorType.DEPTH_SENSOR)
-            depth_profile = find_video_profile(profile_list, depth_cfg["width"], depth_cfg["height"], depth_cfg["fps"])
+            depth_fmt = FORMAT_MAP.get(depth_cfg.get("format")) if depth_cfg.get("format") else None
+            depth_profile = find_video_profile(profile_list, depth_cfg["width"], depth_cfg["height"], depth_cfg["fps"], depth_fmt)
             if depth_profile is None:
                 print(f"[DEPTH] Requested {depth_cfg['width']}x{depth_cfg['height']}@{depth_cfg['fps']} not found, using default.")
                 depth_profile = profile_list.get_default_video_stream_profile()
             config.enable_stream(depth_profile)
             dp = depth_profile.as_video_stream_profile()
-            print(f"[DEPTH] Enabled: {dp.get_width()}x{dp.get_height()} @ {dp.get_fps()} fps")
+            print(f"[DEPTH] Enabled: {dp.get_width()}x{dp.get_height()} @ {dp.get_fps()} fps, format: {dp.get_format()}")
             has_depth = True
         except Exception as e:
             print(f"[DEPTH] Not available: {e}")
@@ -453,10 +472,11 @@ def main():
             try:
                 left_profiles = pipeline.get_stream_profile_list(OBSensorType.LEFT_IR_SENSOR)
                 right_profiles = pipeline.get_stream_profile_list(OBSensorType.RIGHT_IR_SENSOR)
-                left_ir_profile = find_video_profile(left_profiles, ir_cfg["width"], ir_cfg["height"], ir_cfg["fps"])
+                ir_fmt = FORMAT_MAP.get(ir_cfg.get("format")) if ir_cfg.get("format") else None
+                left_ir_profile = find_video_profile(left_profiles, ir_cfg["width"], ir_cfg["height"], ir_cfg["fps"], ir_fmt)
                 if left_ir_profile is None:
                     left_ir_profile = left_profiles.get_default_video_stream_profile()
-                right_ir_profile = find_video_profile(right_profiles, ir_cfg["width"], ir_cfg["height"], ir_cfg["fps"])
+                right_ir_profile = find_video_profile(right_profiles, ir_cfg["width"], ir_cfg["height"], ir_cfg["fps"], ir_fmt)
                 if right_ir_profile is None:
                     right_ir_profile = right_profiles.get_default_video_stream_profile()
                 if streams_cfg.get("ir_left"):

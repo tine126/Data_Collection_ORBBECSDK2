@@ -25,12 +25,14 @@ color:
   width: 640
   height: 480
   fps: 30
+  format: "RGB"          # 像素格式: MJPG, RGB, BGR, YUYV, NV12 等
 
 # ── 深度流 ──
 depth:
   width: 640
   height: 480
   fps: 30
+  format: "Y16"           # 像素格式: Y16
   min_depth_mm: 20                # 有效深度下限 (mm)
   max_depth_mm: 10000             # 有效深度上限 (mm)
   colormap: "JET"                 # 深度可视化色彩映射: JET, TURBO, INFERNO, BONE, HOT
@@ -40,6 +42,7 @@ ir:
   width: 848
   height: 480
   fps: 30
+  format: "Y16"           # 像素格式: Y8, Y16
 
 # ── IMU 加速度计 ──
 accel:

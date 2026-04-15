@@ -26,6 +26,9 @@ color:
   height: 480
   fps: 30
   format: "RGB"          # 像素格式: MJPG, RGB, BGR, YUYV, NV12 等
+  auto_exposure: true             # 自动曝光开关 (true/false)
+  exposure: 156                   # 手动曝光时间 (仅 auto_exposure=false 生效, 范围 1~1999)
+  gain: 16                        # 手动增益 (仅 auto_exposure=false 生效, 范围 0~128)
 
 # ── 深度流 ──
 depth:
@@ -36,6 +39,9 @@ depth:
   min_depth_mm: 20                # 有效深度下限 (mm)
   max_depth_mm: 10000             # 有效深度上限 (mm)
   colormap: "JET"                 # 深度可视化色彩映射: JET, TURBO, INFERNO, BONE, HOT
+  auto_exposure: true             # 自动曝光开关 (true/false)
+  exposure: 3000                  # 手动曝光时间 (仅 auto_exposure=false 生效, 范围 1~199000)
+  gain: 16                        # 手动增益 (仅 auto_exposure=false 生效, 范围 16~248)
 
 # ── IR 流（左右共享配置）──
 ir:
@@ -43,6 +49,9 @@ ir:
   height: 480
   fps: 30
   format: "Y16"           # 像素格式: Y8, Y16
+  auto_exposure: true             # 自动曝光开关 (true/false)
+  exposure: 3000                  # 手动曝光时间 (仅 auto_exposure=false 生效, 范围 1~199000)
+  gain: 16                        # 手动增益 (仅 auto_exposure=false 生效, 范围 16~248)
 
 # ── IMU 加速度计 ──
 accel:

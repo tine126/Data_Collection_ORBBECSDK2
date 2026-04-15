@@ -515,6 +515,52 @@ def main():
     # ── Start video pipeline ──
     pipeline.start(config)
 
+    # ── Apply exposure settings ──
+    # Color exposure
+    color_ae = color_cfg.get("auto_exposure")
+    if color_ae is not None:
+        try:
+            device.set_bool_property(OBPropertyID.OB_PROP_COLOR_AUTO_EXPOSURE_BOOL, bool(color_ae))
+            if not color_ae:
+                if color_cfg.get("exposure") is not None:
+                    device.set_int_property(OBPropertyID.OB_PROP_COLOR_EXPOSURE_INT, int(color_cfg["exposure"]))
+                if color_cfg.get("gain") is not None:
+                    device.set_int_property(OBPropertyID.OB_PROP_COLOR_GAIN_INT, int(color_cfg["gain"]))
+            ae_str = "AUTO" if color_ae else f"Manual (exposure={color_cfg.get('exposure')}, gain={color_cfg.get('gain')})"
+            print(f"[COLOR] Exposure: {ae_str}")
+        except Exception as e:
+            print(f"[COLOR] Failed to set exposure: {e}")
+
+    # Depth exposure
+    depth_ae = depth_cfg.get("auto_exposure")
+    if depth_ae is not None:
+        try:
+            device.set_bool_property(OBPropertyID.OB_PROP_DEPTH_AUTO_EXPOSURE_BOOL, bool(depth_ae))
+            if not depth_ae:
+                if depth_cfg.get("exposure") is not None:
+                    device.set_int_property(OBPropertyID.OB_PROP_DEPTH_EXPOSURE_INT, int(depth_cfg["exposure"]))
+                if depth_cfg.get("gain") is not None:
+                    device.set_int_property(OBPropertyID.OB_PROP_DEPTH_GAIN_INT, int(depth_cfg["gain"]))
+            ae_str = "AUTO" if depth_ae else f"Manual (exposure={depth_cfg.get('exposure')}, gain={depth_cfg.get('gain')})"
+            print(f"[DEPTH] Exposure: {ae_str}")
+        except Exception as e:
+            print(f"[DEPTH] Failed to set exposure: {e}")
+
+    # IR exposure
+    ir_ae = ir_cfg.get("auto_exposure")
+    if ir_ae is not None:
+        try:
+            device.set_bool_property(OBPropertyID.OB_PROP_IR_AUTO_EXPOSURE_BOOL, bool(ir_ae))
+            if not ir_ae:
+                if ir_cfg.get("exposure") is not None:
+                    device.set_int_property(OBPropertyID.OB_PROP_IR_EXPOSURE_INT, int(ir_cfg["exposure"]))
+                if ir_cfg.get("gain") is not None:
+                    device.set_int_property(OBPropertyID.OB_PROP_IR_GAIN_INT, int(ir_cfg["gain"]))
+            ae_str = "AUTO" if ir_ae else f"Manual (exposure={ir_cfg.get('exposure')}, gain={ir_cfg.get('gain')})"
+            print(f"[IR] Exposure: {ae_str}")
+        except Exception as e:
+            print(f"[IR] Failed to set exposure: {e}")
+
     # ── Laser control: turn off laser if IR streams are enabled ──
     if want_ir:
         try:

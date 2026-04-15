@@ -42,7 +42,7 @@ camera_intrinsics.json
 *.json
 # Logs
 *.log
-
+Log/
 # Temporary files
 *.tmp
 *.bak

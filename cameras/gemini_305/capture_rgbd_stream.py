@@ -20,7 +20,7 @@ depth_cfg = config['rgbd']['depth']
 cfg.enable_video_stream(OBStreamType.COLOR_STREAM, color_cfg['width'], color_cfg['height'], color_cfg['fps'], OBFormat.MJPG)
 cfg.enable_video_stream(OBStreamType.DEPTH_STREAM, depth_cfg['width'], depth_cfg['height'], depth_cfg['fps'], OBFormat.Y16)
 if config['rgbd']['align']:
-    cfg.set_align_mode(OBAlignMode.ALIGN_D2C_SW_MODE)
+    cfg.set_align_mode(OBAlignMode.SW_MODE)
 pipeline.start(cfg)
 
 output_dir = os.path.join(config['output']['base_dir'], 'rgbd_stream', datetime.now().strftime("%Y%m%d_%H%M%S"))

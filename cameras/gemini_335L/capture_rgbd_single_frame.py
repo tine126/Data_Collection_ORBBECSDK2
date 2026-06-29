@@ -40,7 +40,7 @@ cfg.enable_video_stream(
 )
 
 # Always enable depth-to-color alignment
-cfg.set_align_mode(OBAlignMode.ALIGN_D2C_SW_MODE)
+cfg.set_align_mode(OBAlignMode.SW_MODE)
 print("Depth-to-Color alignment: ON")
 
 pipeline.start(cfg)

@@ -45,8 +45,8 @@ try:
         left_frame = frames.get_frame_by_type(OBFrameType.LEFT_COLOR_FRAME)
         right_frame = frames.get_frame_by_type(OBFrameType.RIGHT_COLOR_FRAME)
 
-        left_img = frame_to_bgr(left_frame.as_video_frame()) if left_frame else None
-        right_img = frame_to_bgr(right_frame.as_video_frame()) if right_frame else None
+        left_img = frame_to_bgr(left_frame) if left_frame else None
+        right_img = frame_to_bgr(right_frame) if right_frame else None
 
         if left_img is None or right_img is None:
             continue

@@ -36,8 +36,8 @@ if frames:
     right_frame = frames.get_frame_by_type(OBFrameType.RIGHT_COLOR_FRAME)
 
     if left_frame and right_frame:
-        left_img = frame_to_bgr(left_frame.as_video_frame())
-        right_img = frame_to_bgr(right_frame.as_video_frame())
+        left_img = frame_to_bgr(left_frame)
+        right_img = frame_to_bgr(right_frame)
 
         if left_img is not None and right_img is not None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

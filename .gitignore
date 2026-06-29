@@ -47,3 +47,4 @@ Log/
 *.tmp
 *.bak
 .serena/
+captures/

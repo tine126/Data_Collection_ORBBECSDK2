@@ -23,7 +23,7 @@ if len(timestamps) > 1:
     print(f"达成率: {fps/30*100:.1f}%")
 
 # Check IMU rate
-with open(os.path.join(capture_dir, "metadata.json")) as f:
+with open(os.path.join(capture_dir, "metadata.json"), encoding='utf-8') as f:
     meta = json.load(f)
     imu_count = meta.get("imu_records_count", 0)
     if imu_count > 0:

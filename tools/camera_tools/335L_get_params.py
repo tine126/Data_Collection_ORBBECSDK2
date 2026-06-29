@@ -65,7 +65,7 @@ except Exception as e:
     print(f"Depth intrinsics failed: {e}")
 
 output_path = os.path.join(os.path.dirname(__file__), 'camera_params.json')
-with open(output_path, 'w') as f:
+with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(params, f, indent=2)
 
 print(f"\nParameters saved to: {output_path}")

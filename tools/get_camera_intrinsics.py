@@ -162,7 +162,7 @@ def get_intrinsics():
     pipeline.stop()
 
     # Save to JSON
-    with open("camera_intrinsics.json", "w") as f:
+    with open("camera_intrinsics.json", "w", encoding='utf-8') as f:
         json.dump(intrinsics, f, indent=2)
 
     print("Camera Intrinsics & Extrinsics:")

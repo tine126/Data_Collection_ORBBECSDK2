@@ -14,7 +14,8 @@ with open(os.path.join(os.path.dirname(__file__), 'config.yaml'), encoding='utf-
 
 pipeline = Pipeline()
 cfg = Config()
-cfg.enable_stream(OBSensorType.COLOR_SENSOR)
+rgb_cfg = config['rgb']['default']
+cfg.enable_video_stream(OBStreamType.COLOR_STREAM, rgb_cfg['width'], rgb_cfg['height'], rgb_cfg['fps'], OBFormat.MJPG)
 pipeline.start(cfg)
 
 output_dir = os.path.join(config['output']['base_dir'], 'rgb_single')

@@ -18,7 +18,8 @@ device = pipeline.get_device()
 print(f"Device: {device.get_device_info().get_name()}")
 
 cfg = Config()
-cfg.enable_stream(OBSensorType.COLOR_SENSOR)
+rgb_cfg = config['rgb']['default']
+cfg.enable_video_stream(OBStreamType.COLOR_STREAM, rgb_cfg['width'], rgb_cfg['height'], rgb_cfg['fps'], OBFormat.MJPG)
 pipeline.start(cfg)
 
 output_dir = os.path.join(config['output']['base_dir'], 'rgb_stream', datetime.now().strftime("%Y%m%d_%H%M%S"))

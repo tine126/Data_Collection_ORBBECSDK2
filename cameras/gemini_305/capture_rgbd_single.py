@@ -15,8 +15,10 @@ with open(os.path.join(os.path.dirname(__file__), 'config.yaml'), encoding='utf-
 
 pipeline = Pipeline()
 cfg = Config()
-cfg.enable_stream(OBStreamType.COLOR_STREAM)
-cfg.enable_stream(OBStreamType.DEPTH_STREAM)
+color_cfg = config['rgbd']['color']
+depth_cfg = config['rgbd']['depth']
+cfg.enable_video_stream(OBStreamType.COLOR_STREAM, color_cfg['width'], color_cfg['height'], color_cfg['fps'], OBFormat.MJPG)
+cfg.enable_video_stream(OBStreamType.DEPTH_STREAM, depth_cfg['width'], depth_cfg['height'], depth_cfg['fps'], OBFormat.Y16)
 if config['rgbd']['align']:
     cfg.set_align_mode(OBAlignMode.ALIGN_D2C_SW_MODE)
 pipeline.start(cfg)

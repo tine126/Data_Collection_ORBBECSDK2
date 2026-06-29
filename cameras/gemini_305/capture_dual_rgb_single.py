@@ -38,12 +38,16 @@ if frames:
     if left_frame and right_frame:
         left_img = frame_to_bgr(left_frame.as_video_frame())
         right_img = frame_to_bgr(right_frame.as_video_frame())
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        cv2.imwrite(f"{output_dir}/left_{timestamp}.png", left_img)
-        cv2.imwrite(f"{output_dir}/right_{timestamp}.png", right_img)
-        print(f"Saved to {output_dir}")
+
+        if left_img is not None and right_img is not None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            cv2.imwrite(f"{output_dir}/left_{timestamp}.png", left_img)
+            cv2.imwrite(f"{output_dir}/right_{timestamp}.png", right_img)
+            print(f"Saved to {output_dir}")
+        else:
+            print(f"Failed to convert frames: left={'OK' if left_img is not None else 'None'}, right={'OK' if right_img is not None else 'None'}")
     else:
-        print("Failed to get frames")
+        print(f"Failed to get frames: left={left_frame is not None}, right={right_frame is not None}")
 else:
     print("No frames received")
 

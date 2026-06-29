@@ -1,5 +1,19 @@
 # Orbbec SDK v2 数据采集工具使用文档
 
+## 项目结构
+
+```
+orbbecSDKv2/
+├── cameras/                    # 相机脚本（按型号分类）
+│   ├── gemini_335L/           # Gemini 335L 专用脚本
+│   ├── gemini_305/            # Gemini 305 专用脚本
+│   └── shared/                # 共享工具模块
+├── tools/                     # 通用工具脚本
+├── output/                    # 输出目录
+├── config.yaml               # 全局配置（参考）
+└── main.py                   # 主程序（传统采集）
+```
+
 ## 环境要求
 
 - Python 3.8+
@@ -12,6 +26,36 @@ conda activate env  #自己的conda环境
 pip install pyyaml opencv-python "numpy<2"
 pip install pyorbbecsdk2
 ```
+
+## 快速开始
+
+### Gemini 335L
+```bash
+# 查看支持的配置
+python cameras/gemini_335L/list_profiles.py
+
+# 连续采集 RGB-D
+python cameras/gemini_335L/capture_rgbd_stream.py
+
+# 获取相机参数
+python cameras/gemini_335L/get_params.py
+```
+
+详见 [cameras/gemini_335L/README.md](cameras/gemini_335L/README.md)
+
+### Gemini 305
+```bash
+# 查看支持的配置
+python cameras/gemini_305/list_profiles.py
+
+# 连续采集双路RGB
+python cameras/gemini_305/capture_dual_rgb_stream.py
+
+# 获取相机参数
+python cameras/gemini_305/get_params.py
+```
+
+详见 [cameras/gemini_305/README.md](cameras/gemini_305/README.md)
 
 ## 配置文件
 

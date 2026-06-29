@@ -27,8 +27,8 @@ if not has_dual_color_sensors(device):
 cfg = Config()
 left_cfg = config['dual_rgb']['left']
 right_cfg = config['dual_rgb']['right']
-cfg.enable_video_stream(OBSensorType.LEFT_COLOR_SENSOR, left_cfg['width'], left_cfg['height'], left_cfg['fps'], OBFormat.MJPG)
-cfg.enable_video_stream(OBSensorType.RIGHT_COLOR_SENSOR, right_cfg['width'], right_cfg['height'], right_cfg['fps'], OBFormat.MJPG)
+cfg.enable_video_stream(OBSensorType.LEFT_COLOR_SENSOR, left_cfg['width'], left_cfg['height'], left_cfg['fps'], OBFormat.BGR)
+cfg.enable_video_stream(OBSensorType.RIGHT_COLOR_SENSOR, right_cfg['width'], right_cfg['height'], right_cfg['fps'], OBFormat.BGR)
 pipeline.start(cfg)
 
 output_dir = os.path.join(config['output']['base_dir'], 'dual_rgb_stream', datetime.now().strftime("%Y%m%d_%H%M%S"))

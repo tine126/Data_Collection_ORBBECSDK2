@@ -35,7 +35,7 @@ if frames:
 
     if color_frame and depth_frame:
         color_img = frame_to_bgr(color_frame)
-        depth_data = np.asanyarray(depth_frame.get_data()).reshape(depth_frame.get_height(), depth_frame.get_width())
+        depth_data = np.frombuffer(depth_frame.get_data(), dtype=np.uint16).reshape(depth_frame.get_height(), depth_frame.get_width())
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         cv2.imwrite(f"{output_dir}/color_{timestamp}.png", color_img)

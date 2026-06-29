@@ -74,10 +74,13 @@ try:
         if color_img is None:
             continue
 
-        depth_data = np.asanyarray(depth_frame.get_data()).reshape(
-            depth_frame.get_height(),
-            depth_frame.get_width()
-        )
+        # Get depth data as 16-bit numpy array
+        depth_height = depth_frame.get_height()
+        depth_width = depth_frame.get_width()
+        depth_data = np.frombuffer(
+            depth_frame.get_data(),
+            dtype=np.uint16
+        ).reshape(depth_height, depth_width)
 
         # Create depth visualization for preview (colormap)
         depth_clipped = np.clip(

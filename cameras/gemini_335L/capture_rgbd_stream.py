@@ -40,7 +40,7 @@ try:
         depth_frame = frames.get_depth_frame()
 
         color_img = frame_to_bgr(color_frame) if color_frame else None
-        depth_data = np.asanyarray(depth_frame.get_data()).reshape(depth_frame.get_height(), depth_frame.get_width()) if depth_frame else None
+        depth_data = np.frombuffer(depth_frame.get_data(), dtype=np.uint16).reshape(depth_frame.get_height(), depth_frame.get_width()) if depth_frame else None
 
         if color_img is None or depth_data is None:
             continue

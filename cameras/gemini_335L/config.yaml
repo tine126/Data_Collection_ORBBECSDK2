@@ -37,7 +37,7 @@ rgbd:
 
 # 输出配置
 output:
-  base_dir: "../../output/gemini_335L"
+  base_dir: "F:/Code/orbbecSDKv2/output/gemini_335L"
   color_format: "png"
   depth_format: "png"
   jpg_quality: 95

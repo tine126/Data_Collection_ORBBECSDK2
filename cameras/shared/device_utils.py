@@ -23,6 +23,6 @@ def find_depth_work_mode(device, target_name):
     mode_list = device.get_depth_work_mode_list()
     for i in range(mode_list.get_count()):
         mode = mode_list.get_depth_work_mode_by_index(i)
-        if mode.get_name() == target_name:
+        if str(mode) == target_name:
             return mode
     return None

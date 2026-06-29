@@ -1,0 +1,48 @@
+# Gemini 305 Camera Configuration
+
+# 双路 RGB 配置
+dual_rgb:
+  left:
+    width: 1280
+    height: 800
+    fps: 30
+    format: "MJPG"
+  right:
+    width: 1280
+    height: 800
+    fps: 30
+    format: "MJPG"
+  sync: true
+  auto_exposure: false
+  exposure: 10000
+  gain: 100
+
+# RGB-D 流配置
+rgbd:
+  color:
+    width: 1280
+    height: 800
+    fps: 30
+    format: "MJPG"
+    auto_exposure: false
+    exposure: 10000
+    gain: 100
+  depth:
+    width: 640
+    height: 400
+    fps: 30
+    format: "Y16"
+    auto_exposure: false
+    exposure: 10000
+    gain: 100
+  align: true
+  min_depth_mm: 20
+  max_depth_mm: 10000
+  colormap: "JET"
+
+# 输出配置
+output:
+  base_dir: "../../output/gemini_305"
+  color_format: "png"
+  depth_format: "png"
+  jpg_quality: 95

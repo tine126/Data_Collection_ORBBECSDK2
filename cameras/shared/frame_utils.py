@@ -5,11 +5,13 @@ from pyorbbecsdk import OBFormat
 
 
 def frame_to_bgr(frame):
-    """Convert Orbbec frame to BGR numpy array."""
+    """Convert Orbbec video frame to BGR numpy array.
+
+    Note: Expects frame to already be a video frame (call as_video_frame() before passing).
+    """
     if frame is None:
         return None
 
-    frame = frame.as_video_frame()
     w, h = frame.get_width(), frame.get_height()
     fmt = frame.get_format()
     data = np.asanyarray(frame.get_data())
